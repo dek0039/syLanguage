@@ -55,12 +55,16 @@ namespace sy {
            complete = removeSpacing(complete);
            complete = removeChar(complete, DELIM);
            complete = removeString(complete, VAR);
-
-           float value = extractValue(complete);
            std::string name = extractName(complete);
            if (name != "0")
-                Variables[name] = std::make_shared<Variable>(value);
-
+           {
+               Stack.push_back([name, complete]
+                   {
+                       float value = extractValue(complete);
+                       Variables[name] = std::make_shared<Variable>(value);
+                   });
+           }
+               
     //       std::cout << name << ":" << value << std::endl;
            last += delims[i];
        }

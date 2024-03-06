@@ -56,12 +56,17 @@ namespace sy
 				auto innerVar = completeWithSpaces.substr(findLeftBracket + 1);
 				innerVar.erase(innerVar.size() - 1);
 
-				if (Variables.contains(innerVar))
+				
+				Stack.push_back([innerVar]
 				{
-					Stack.push_back([innerVar]
+						if (Variables.contains(innerVar))
 						{
 							std::cout << Variables[innerVar]->asFloat() << std::endl;
-						});
+						}
+				});
+
+				if (Variables.contains(innerVar))
+				{
 					last += delims[i];
 					continue;
 				}
@@ -171,15 +176,20 @@ namespace sy
 					}			
 				}
 
+			
+
 				if (!Variables.contains(innerVar))
 				{
-					std::cerr << "Syntax error! Unidentified variable: |" << innerVar << "|" << std::endl << "Line: " << line << std::endl;
 					last += delims[i];
 					continue;
 				}
 
-				Stack.push_back([innerVar]
+				Stack.push_back([innerVar, line]
 				{
+						if (!Variables.contains(innerVar))
+						{
+							std::cerr << "Syntax error! Unidentified variable: |" << innerVar << "|" << std::endl << "Line: " << line << std::endl;
+						}
 						std::cout << Variables[innerVar]->asFloat() << std::endl;
 				});
 			}

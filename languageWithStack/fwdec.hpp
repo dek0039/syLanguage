@@ -59,7 +59,8 @@ namespace sy {
         EQADD,
         EQSUB,
         EQDIV,
-        EQMULT
+        EQMULT,
+        EQL
     };
 
     static std::map<OPERATORS, std::string> OPERATOR_TO_STRING = {
@@ -71,7 +72,7 @@ namespace sy {
     {OPERATORS::EQADD, "=+"},
     {OPERATORS::EQSUB, "=-"},
     {OPERATORS::EQDIV, "=/"},
-    {OPERATORS::EQMULT, "=*"}
+    {OPERATORS::EQMULT, "=*"},
     };
 
     inline std::string removeSpacing(std::string str)
