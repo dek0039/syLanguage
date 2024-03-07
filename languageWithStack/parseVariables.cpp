@@ -45,7 +45,7 @@ namespace sy {
         return "0";
     }
 
-    void parseVariables(std::string line)
+    void parseVariables(std::string line, std::string functionName)
     {
        const auto delims = findLocation(line, DELIM);
        int last = 0;
@@ -58,11 +58,22 @@ namespace sy {
            std::string name = extractName(complete);
            if (name != "0")
            {
-               Stack.push_back([name, complete]
-                   {
-                       float value = extractValue(complete);
-                       Variables[name] = std::make_shared<Variable>(value);
-                   });
+               if (functionName.empty())
+               {
+                   Stack.push_back([name, complete]
+                       {
+                           float value = extractValue(complete);
+                           Variables[name] = std::make_shared<Variable>(value);
+                       });
+               }
+               else
+               {    
+                   UserFunctions[functionName].Stack.push_back([name, complete, functionName]
+                       {
+                           float value = extractValue(complete);
+                           UserFunctions[functionName].Variables[name] = std::make_shared<Variable>(value);
+                       });
+               }
            }
                
     //       std::cout << name << ":" << value << std::endl;

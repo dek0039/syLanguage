@@ -135,6 +135,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="parseFunctions.cpp" />
     <ClCompile Include="parseLines.cpp" />
+    <ClCompile Include="parseUserFunctions.cpp" />
     <ClCompile Include="parseVariables.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -24,7 +24,7 @@ namespace sy
 		return numaric;
 	}
 
-    inline float doDoubleVar(std::string complete)
+    inline float doDoubleVar(std::string complete, std::map<std::string, std::shared_ptr<Variable>>& VariablesMap)
     {
 		std::string firstVar;
 		std::string secondVar;
@@ -64,18 +64,18 @@ namespace sy
 		int which = 0;
 		bool containsBoth = true;
 
-		if (Variables.contains(firstVar))
+		if (VariablesMap.contains(firstVar))
 		{
-			val = Variables[firstVar]->m_val;
+			val = VariablesMap[firstVar]->m_val;
 		}
 		else
 		{
 			containsBoth = false;
 		}
-		if (Variables.contains(secondVar))
+		if (VariablesMap.contains(secondVar))
 		{
 			which = 1;
-			val = Variables[secondVar]->m_val;
+			val = VariablesMap[secondVar]->m_val;
 		}
 		else
 		{
@@ -99,49 +99,49 @@ namespace sy
 		}
 
 		if (OP == OPERATORS::ADD && containsBoth) {
-			Variables[firstVar]->m_val += Variables[secondVar]->m_val;
+			VariablesMap[firstVar]->m_val += VariablesMap[secondVar]->m_val;
 		}
 		else if (OP == OPERATORS::SUB && containsBoth) {
-			Variables[firstVar]->m_val -= Variables[secondVar]->m_val;
+			VariablesMap[firstVar]->m_val -= VariablesMap[secondVar]->m_val;
 		}
 		else if (OP == OPERATORS::MULT && containsBoth) {
-			Variables[firstVar]->m_val *= Variables[secondVar]->m_val;
+			VariablesMap[firstVar]->m_val *= VariablesMap[secondVar]->m_val;
 		}
 		else if (OP == OPERATORS::DIV && containsBoth) {
-			Variables[firstVar]->m_val /= Variables[secondVar]->m_val;
+			VariablesMap[firstVar]->m_val /= VariablesMap[secondVar]->m_val;
 		}
 		else if (OP == OPERATORS::ADD) {
 			if (which)
-				Variables[secondVar]->m_val += val;
+				VariablesMap[secondVar]->m_val += val;
 			else
-				Variables[firstVar]->m_val += val;
+				VariablesMap[firstVar]->m_val += val;
 		}
 		else if (OP == OPERATORS::SUB) {
 			if (which)
-				Variables[secondVar]->m_val -= val;
+				VariablesMap[secondVar]->m_val -= val;
 			else
-				Variables[firstVar]->m_val -= val;
+				VariablesMap[firstVar]->m_val -= val;
 		}
 		else if (OP == OPERATORS::MULT) {
 			if (which)
-				Variables[secondVar]->m_val *= val;
+				VariablesMap[secondVar]->m_val *= val;
 			else
-				Variables[firstVar]->m_val *= val;
+				VariablesMap[firstVar]->m_val *= val;
 		}
 		else if (OP == OPERATORS::DIV) {
 			if (which)
-				Variables[secondVar]->m_val /= val;
+				VariablesMap[secondVar]->m_val /= val;
 			else
-				Variables[firstVar]->m_val /= val;
+				VariablesMap[firstVar]->m_val /= val;
 		}
 		else if (OP == OPERATORS::EQUALS) {
-				Variables[firstVar]->m_val = Variables[secondVar]->m_val;
+				VariablesMap[firstVar]->m_val = VariablesMap[secondVar]->m_val;
 		}
 
         return 0.0;
     }
 
-	void getOperations(std::string line)
+	void getOperations(std::string line, std::string functionName)
 	{
 	    const auto delims = findLocation(line, DELIM);
 	    int last = 0;
@@ -151,11 +151,23 @@ namespace sy
 	    	complete = removeSpacing(complete);
 	    	complete = removeChar(complete, DELIM);
 			if (!complete.contains(VAR))
-				Stack.push_back([complete]
+			{
+				if (functionName.empty())
 				{
-						doDoubleVar(complete);
-				});
-		
+					Stack.push_back([complete]
+						{
+							doDoubleVar(complete, Variables);
+						});
+				}
+				else
+				{
+					UserFunctions[functionName].Stack.push_back([complete, functionName]
+						{
+							doDoubleVar(complete, UserFunctions[functionName].Variables);
+						});
+				}
+			}
+				
 			last += delims[i];
 	    }
 	}

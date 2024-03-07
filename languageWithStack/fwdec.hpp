@@ -41,12 +41,37 @@ namespace sy {
     inline std::map<std::string, std::shared_ptr<Variable>> Variables;
     inline std::vector<std::function<void()>> Stack;
 
+    class userFunction
+    {
+    public:
+       std::map<std::string, std::shared_ptr<Variable>> Variables;
+       std::vector<std::function<void()>> Stack;
+
+       void execute()
+       {
+           for (auto& stack : Stack)
+           {
+               if (stack != nullptr)
+                   stack();
+           }
+       }
+
+       void clear()
+       {
+           Stack.clear();
+           Variables.clear();
+       }
+    };
+
+    inline std::map<std::string, userFunction> UserFunctions;
+
     extern std::vector<std::string> getLines(std::string file);
-    extern void parseVariables(std::string line);
-    extern void getOperations(std::string line);
+    extern void parseVariables(std::string line, std::string functionName);
+    extern void getOperations(std::string line, std::string functionName);
     extern void executeStack();
     extern void parseLines(std::string file);
-    extern void parseFunctions(std::string line);
+    extern void parseFunctions(std::string line, std::string functionName);
+    extern void parseUserFunctions(std::string line);
 
     enum class OPERATORS
     {
@@ -141,4 +166,5 @@ namespace sy {
 #define DUMP_VAR "dump_var"
 #define EXIT "exit"
 #define QUOTE '\"'
+#define FUNCTION "function"
 }
