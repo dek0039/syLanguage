@@ -21,7 +21,7 @@ namespace sy
 				Stack.push_back([complete]
 					{
 						auto& userFunc = UserFunctions[removeString(complete, "()")];
-						for (const auto& func : userFunc.Stack)
+						for (const auto& func : userFunc->Stack)
 						{
 							if (func)
 								func();

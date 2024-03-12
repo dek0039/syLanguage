@@ -35,7 +35,7 @@ namespace sy
 				if ("end" != removeString(removeSpacing(line), "()"))
 				{
 					userFunction function;
-					UserFunctions.insert({ removeString(removeSpacing(line), "()"),  function });
+					UserFunctions.insert({ removeString(removeSpacing(line), "()"),  std::make_shared<userFunction>(function) });
 					userFunctionName = removeString(removeSpacing(line), "()");
 				}
 
@@ -45,9 +45,11 @@ namespace sy
 			if (line.contains(VAR))
 				parseVariables(line, userFunctionName);
 
-			// + = += - etc
+			if (line.contains(FOR))
+				parseForLoop(line, userFunctionName);
+
 			for (const auto& [OP, OPSTR] : OPERATOR_TO_STRING) {
-				if (line.contains(OPSTR))
+				if (line.contains(OPSTR) && !line.contains(FOR))  
 					getOperations(line, userFunctionName);
 				break;
 			}

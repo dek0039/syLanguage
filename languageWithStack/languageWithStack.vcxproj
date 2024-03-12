@@ -133,6 +133,7 @@
     <ClCompile Include="getLines.cpp" />
     <ClCompile Include="getOperations.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="parseForLoop.cpp" />
     <ClCompile Include="parseFunctions.cpp" />
     <ClCompile Include="parseLines.cpp" />
     <ClCompile Include="parseUserFunctions.cpp" />

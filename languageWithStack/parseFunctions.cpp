@@ -61,15 +61,24 @@ namespace sy
 				
 				if (isFunction)
 				{
-					UserFunctions[functionName].Stack.push_back([innerVar, functionName]
+					UserFunctions[functionName]->Stack.push_back([innerVar, functionName]
 						{
-							if (UserFunctions[functionName].Variables.contains(innerVar))
+							if (UserFunctions[functionName]->Variables.contains(innerVar))
 							{
-								std::cout << UserFunctions[functionName].Variables[innerVar]->asFloat() << std::endl;
+								std::cout << UserFunctions[functionName]->Variables[innerVar]->asFloat() << std::endl;
+							}
+							else if(Variables.contains(innerVar))
+							{
+								std::cout << Variables[innerVar]->asFloat() << std::endl;
 							}
 						});
 
-					if (UserFunctions[functionName].Variables.contains(innerVar))
+					if (UserFunctions[functionName]->Variables.contains(innerVar))
+					{
+						last += delims[i];
+						continue;
+					}
+					else if (Variables.contains(innerVar))
 					{
 						last += delims[i];
 						continue;
@@ -103,7 +112,7 @@ namespace sy
 						innerVar = removeChar(innerVar, QUOTE);
 						if (isFunction)
 						{
-							UserFunctions[functionName].Stack.push_back([innerVar]
+							UserFunctions[functionName]->Stack.push_back([innerVar]
 								{
 									int lastPos = 0;
 									const auto newLines = findLocationString(innerVar, "-n");
@@ -153,19 +162,19 @@ namespace sy
 
 				if (isFunction)
 				{
-					if (!UserFunctions[functionName].Variables.contains(innerVar))
+					if (!UserFunctions[functionName]->Variables.contains(innerVar))
 					{
 						last += delims[i];
 						continue;
 					}
 
-					UserFunctions[functionName].Stack.push_back([innerVar, line, functionName]
+					UserFunctions[functionName]->Stack.push_back([innerVar, line, functionName]
 						{
-							if (!UserFunctions[functionName].Variables.contains(innerVar))
+							if (!UserFunctions[functionName]->Variables.contains(innerVar))
 							{
 								std::cerr << "Syntax error! Unidentified variable: |" << innerVar << "|" << std::endl << "Line: " << line << std::endl;
 							}
-							std::cout << UserFunctions[functionName].Variables[innerVar]->asFloat() << std::endl;
+							std::cout << UserFunctions[functionName]->Variables[innerVar]->asFloat() << std::endl;
 						});
 				}
 				else
@@ -206,9 +215,9 @@ namespace sy
 
 				if (isFunction)
 				{
-					UserFunctions[functionName].Stack.push_back([&]
+					UserFunctions[functionName]->Stack.push_back([&]
 						{
-							for (const auto& [n, c] : UserFunctions[functionName].Variables)
+							for (const auto& [n, c] : UserFunctions[functionName]->Variables)
 								std::cout << n << "=" << c->m_val << std::endl;
 						});
 				}

@@ -24,7 +24,7 @@ namespace sy
 		return numaric;
 	}
 
-    inline float doDoubleVar(std::string complete, std::map<std::string, std::shared_ptr<Variable>>& VariablesMap)
+    inline float doDoubleVar(std::string complete, std::map<std::string, std::shared_ptr<Variable>>& VariablesMap, bool isFunc)
     {
 		std::string firstVar;
 		std::string secondVar;
@@ -98,6 +98,25 @@ namespace sy
 			exit(0);
 		}
 
+		if (isFunc)
+		{
+			if (which == 0)
+			{
+				if (!VariablesMap[firstVar])
+				{
+					VariablesMap = Variables;
+				}
+			}
+
+			if (which == 1)
+			{
+				if (!VariablesMap[secondVar])
+				{
+					VariablesMap = Variables;
+				}
+			}
+		}
+
 		if (OP == OPERATORS::ADD && containsBoth) {
 			VariablesMap[firstVar]->m_val += VariablesMap[secondVar]->m_val;
 		}
@@ -156,14 +175,14 @@ namespace sy
 				{
 					Stack.push_back([complete]
 						{
-							doDoubleVar(complete, Variables);
+							doDoubleVar(complete, Variables, false);
 						});
 				}
 				else
 				{
-					UserFunctions[functionName].Stack.push_back([complete, functionName]
+					UserFunctions[functionName]->Stack.push_back([complete, functionName]
 						{
-							doDoubleVar(complete, UserFunctions[functionName].Variables);
+						    doDoubleVar(complete, UserFunctions[functionName]->Variables, true);				
 						});
 				}
 			}

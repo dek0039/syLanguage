@@ -68,10 +68,10 @@ namespace sy {
                }
                else
                {    
-                   UserFunctions[functionName].Stack.push_back([name, complete, functionName]
+                   UserFunctions[functionName]->Stack.push_back([name, complete, functionName]
                        {
                            float value = extractValue(complete);
-                           UserFunctions[functionName].Variables[name] = std::make_shared<Variable>(value);
+                           UserFunctions[functionName]->Variables[name] = std::make_shared<Variable>(value);
                        });
                }
            }

@@ -63,7 +63,7 @@ namespace sy {
        }
     };
 
-    inline std::map<std::string, userFunction> UserFunctions;
+    inline std::map<std::string, std::shared_ptr<userFunction>> UserFunctions;
 
     extern std::vector<std::string> getLines(std::string file);
     extern void parseVariables(std::string line, std::string functionName);
@@ -72,6 +72,7 @@ namespace sy {
     extern void parseLines(std::string file);
     extern void parseFunctions(std::string line, std::string functionName);
     extern void parseUserFunctions(std::string line);
+    extern void parseForLoop(std::string line, std::string functionName);
 
     enum class OPERATORS
     {
@@ -85,8 +86,21 @@ namespace sy {
         EQSUB,
         EQDIV,
         EQMULT,
-        EQL
+        BIGGER,
+        SMALLER,
+        BIGGEREQL,
+        SMALLEREQL
     };
+
+    struct forLoopCTX
+    {
+        int value;
+        int till;
+        bool inc;
+        OPERATORS OP;
+        std::string functionName;
+    };
+    inline std::map <std::string, std::shared_ptr<forLoopCTX>> ForLoopContext;
 
     static std::map<OPERATORS, std::string> OPERATOR_TO_STRING = {
     {OPERATORS::EQUALS, "="},
@@ -162,8 +176,10 @@ namespace sy {
 
 #define VAR "var"
 #define DELIM ';'
+#define COMMA ','
+#define FOR "for"
 #define PRINT "print"
-#define DUMP_VAR "dump_var"
+#define DUMP_VAR "dump"
 #define EXIT "exit"
 #define QUOTE '\"'
 #define FUNCTION "function"
