@@ -122,7 +122,6 @@ namespace sy
 											std::cout << removeString(innerVar.substr(lastPos, pos - lastPos), "-n") << std::endl;
 											lastPos = pos;
 										}
-										std::cout << removeString(innerVar.substr(lastPos), "-n") << std::endl;
 									}
 									else
 									{

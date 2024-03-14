@@ -48,7 +48,7 @@ namespace sy
 			OP = OPERATORS::MULT;
 		}
 		else if (complete.contains("/="))
-		{
+		{   
 			firstVar = complete.substr(0, complete.find("/="));
 			secondVar = complete.substr(firstVar.length() + 2, complete.length());
 			OP = OPERATORS::DIV;
