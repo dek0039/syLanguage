@@ -138,6 +138,7 @@
     <ClCompile Include="parseLines.cpp" />
     <ClCompile Include="parseUserFunctions.cpp" />
     <ClCompile Include="parseVariables.cpp" />
+    <ClCompile Include="setFunctionReturn.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fwdec.hpp" />

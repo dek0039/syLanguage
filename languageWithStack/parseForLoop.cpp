@@ -87,19 +87,25 @@ namespace sy
 				ctx.functionName = innerVar.substr(comma[2] + 1);
 				ctx.value = std::atoi(firstValueValue.c_str());
 				ctx.till = std::atoi(secondStatementValue.c_str());
-		
+
+				if (UserFunctions.contains(ctx.functionName))
+				{
+					UserFunctions[ctx.functionName]->Variables[firstValueVariableName] = std::make_shared<Variable>(ctx.value);
+				}
+
 				if (functionName.empty())
 				{
-					Stack.push_back([ctx]
+					Stack.push_back([ctx, firstValueVariableName]
 						{
 							if (ctx.inc)
 							{
 								if (ctx.OP == OPERATORS::SMALLER)
 								{
-									for (int i = ctx.value; i < ctx.till; i++)
+									for (int j = ctx.value; j < ctx.till; j++)
 									{
 										if (UserFunctions.contains(ctx.functionName))
 										{
+											*UserFunctions[ctx.functionName]->Variables[firstValueVariableName] = j;
 										    UserFunctions[ctx.functionName]->execute();
 										}
 									}

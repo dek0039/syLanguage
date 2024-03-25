@@ -11,6 +11,11 @@ namespace sy {
                 auto pos = complete.find("=");
                 auto str = complete.substr(pos + 1, complete.length());
                 
+                if (UserFunctions.contains(str))
+                {
+                    if (UserFunctions[str] != nullptr)
+                        UserFunctions[str]->execute();
+                }
                 if (Variables.contains(str))
                 {
                     return Variables[str]->asFloat();
@@ -22,7 +27,7 @@ namespace sy {
                     }
                     catch (...)
                     {
-                        std::cerr << "Invalid syntax by: " << complete;
+                        std::cerr << "Invalid syntax by: " << complete << std::endl;
                     }
                 }  
             }
@@ -55,7 +60,9 @@ namespace sy {
            complete = removeSpacing(complete);
            complete = removeChar(complete, DELIM);
            complete = removeString(complete, VAR);
+           complete = removeString(complete, "()");
            std::string name = extractName(complete);
+
            if (name != "0")
            {
                if (functionName.empty())

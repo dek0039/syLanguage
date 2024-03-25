@@ -46,7 +46,7 @@ namespace sy {
     public:
        std::map<std::string, std::shared_ptr<Variable>> Variables;
        std::vector<std::function<void()>> Stack;
-
+  
        void execute()
        {
            for (auto& stack : Stack)
@@ -73,6 +73,7 @@ namespace sy {
     extern void parseFunctions(std::string line, std::string functionName);
     extern void parseUserFunctions(std::string line);
     extern void parseForLoop(std::string line, std::string functionName);
+    extern void parseFunctionReturn(std::string line, std::string functionName);
 
     enum class OPERATORS
     {
@@ -173,6 +174,27 @@ namespace sy {
         return occurrences;
     }
 
+    inline bool isFloat(std::string myString) {
+        std::istringstream iss(myString);
+        float f;
+        iss >> f; // noskipws considers leading whitespace invalid
+        // Check the entire string was consumed and if either failbit or badbit is set
+        return iss.eof() && !iss.fail();
+    }
+
+    inline bool isNumaric(std::string myString) {
+        bool numaric = true;
+
+        for (const char c : myString)
+        {
+            if (!isdigit(c))
+            {
+                numaric = false;
+            }
+        }
+
+        return numaric;
+    }
 
 #define VAR "var"
 #define DELIM ';'
@@ -183,4 +205,6 @@ namespace sy {
 #define EXIT "exit"
 #define QUOTE '\"'
 #define FUNCTION "function"
+#define INPUT "input"
+#define RETURN "return"
 }

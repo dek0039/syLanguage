@@ -14,7 +14,7 @@ namespace sy
 			if (line.contains("//")) {
 				if (line.find("//") == 0)
 					continue;
-				else
+				else 
 					line = line.substr(0, line.find("//"));
 			}
 
@@ -40,6 +40,14 @@ namespace sy
 				}
 
 				continue;
+			}
+
+			if (!UserFunctions.empty())
+			{
+				if (line.contains(RETURN))
+				{
+					parseFunctionReturn(line, userFunctionName);
+				}
 			}
 
 			if (line.contains(VAR))

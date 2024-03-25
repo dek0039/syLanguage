@@ -2,28 +2,6 @@
 
 namespace sy
 {
-	bool isFloat(std::string myString) {
-		std::istringstream iss(myString);
-		float f;
-		iss >> f; // noskipws considers leading whitespace invalid
-		// Check the entire string was consumed and if either failbit or badbit is set
-		return iss.eof() && !iss.fail();
-	}
-
-	bool isNumaric(std::string myString) {
-		bool numaric = true;
-
-		for (const char c : myString)
-		{
-			if (!isdigit(c))
-			{
-				numaric = false;
-			}
-		}
-
-		return numaric;
-	}
-
     inline float doDoubleVar(std::string complete, std::map<std::string, std::shared_ptr<Variable>>& VariablesMap, bool isFunc)
     {
 		std::string firstVar;
